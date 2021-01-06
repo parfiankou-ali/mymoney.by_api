@@ -15,15 +15,3 @@
 $router->get('/', function () use ($router) {
     return response()->json(new \stdClass());
 });
-
-$router->get('/images/users/{userId}/{fileName}', function ($userId, $fileName) {
-    $filePath = storage_path("app/images/users/${userId}/${fileName}");
-    $file = new \Illuminate\Http\File($filePath);
-
-    $image = \Intervention\Image\Facades\Image::make($file);
-    $response = new \Symfony\Component\HttpFoundation\BinaryFileResponse($file, 200, [
-        'Content-Type' => $image->mime()
-    ]);
-
-    return $response;
-});

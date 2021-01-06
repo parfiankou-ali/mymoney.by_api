@@ -12,7 +12,9 @@
         "laravel/lumen-framework": "5.7.*",
         "league/flysystem": "^1.0",
         "tymon/jwt-auth": "^1.0.0",
-        "vlucas/phpdotenv": "~2.2"
+        "vlucas/phpdotenv": "~2.2",
+        "nesbot/carbon": "2.42.0 as 1.39.0",
+        "kylekatarnls/laravel-carbon-2": "^1.0.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
