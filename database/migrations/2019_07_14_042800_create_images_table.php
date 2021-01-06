@@ -15,8 +15,8 @@ class CreateImagesTable extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('origin_width');
-            $table->unsignedInteger('origin_height');
+            $table->unsignedInteger('original_width');
+            $table->unsignedInteger('original_height');
             $table->string('extension', 16);
             $table->timestampsTz();
             $table->softDeletesTz();

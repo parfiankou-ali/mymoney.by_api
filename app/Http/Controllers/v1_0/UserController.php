@@ -64,7 +64,7 @@ class UserController extends Controller
     public function get(UserGetRequest $request)
     {
         try {
-            $user = \App\Http\Models\User::findOrFail($request->input('id'));
+            $user = User::findOrFail($request->input('id'));
         } catch (ModelNotFoundException $exception) {
             throw new UserNotFoundHttpException();
         }

@@ -15,7 +15,7 @@ abstract class File
 
     public static function storeImage(UploadedFile $file, int $id)
     {
-        $directory = storage_path("app/images/users/${id}");
+        $directory = static::getImageDirectory($id);
 
         static::makeDirectory($directory);
 
@@ -38,7 +38,7 @@ abstract class File
     public static function storeImageReplicas(UploadedFile $file, string $directory)
     {
         $originalImage = Image::make($file);
-        $replicas = static::getAvailableImageReplicasByDimensions($originalImage->width(), $originalImage->height());
+        $replicas = static::getAvailableImageReplicaSizesByDimensions($originalImage->width(), $originalImage->height());
 
         foreach ($replicas as $replica) {
             $image = Image::make($file);
@@ -62,6 +62,11 @@ abstract class File
         $file->move($directory, "${fileName}.$extension");
     }
 
+    public static function getImageDirectory(int $id)
+    {
+        return storage_path("app/images/users/${id}");
+    }
+
     public static function getImagePath(string $directory, string $extension, string $size): string
     {
         return "${directory}/${size}.${extension}";
@@ -74,7 +79,7 @@ abstract class File
         }
     }
 
-    public static function getAvailableImageReplicasByDimensions(int $width, int $height)
+    public static function getAvailableImageReplicaSizesByDimensions(int $width, int $height)
     {
         $replicas = [];
 

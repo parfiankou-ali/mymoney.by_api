@@ -3,6 +3,8 @@
 namespace App\Http\Resources\v1_0;
 
 use App\Http\Enums\ImageSize;
+use App\Storage\File;
+
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ImageResource extends JsonResource
@@ -29,50 +31,33 @@ class ImageResource extends JsonResource
 
     protected function getSquareImageLinks()
     {
-        return [
-            //
+        return (object) [
+            ImageSize::MAX_128 => $this->getImageLink(ImageSize::SQUARE_128),
         ];
     }
 
     protected function getReplicasLinks()
     {
-        return [
-            //
-        ];
+        $replicaSizes = File::getAvailableImageReplicaSizesByDimensions($this->original_width, $this->original_height);
+        $replicas = [];
+
+        foreach ($replicaSizes as $replicaSize) {
+            $replicas[$replicaSize] = $this->getImageLink($replicaSize);
+        }
+
+        return (object) $replicas;
     }
 
     protected function getOriginalImageLink()
     {
-        return "";
+        return $this->getImageLink(ImageSize::ORIGINAL);
     }
 
-
-
-
-
-
-
-    private function makeImageUrl(int $id, string $size, string $extension): string
+    protected function getImageLink(string $size): string
     {
-        return selfUrl("images/users/${id}/${size}.${extension}");
-    }
-
-    private function getImageSizes()
-    {
-        $sizes = computeImageMaxSizes($this->origin_width, $this->origin_height);
-        $buffer = [];
-
-        foreach ($sizes as $size) {
-            $buffer['minified'][$size] = $this->makeImageUrl($this->id, $size, $this->extension);
-        }
-
-        $buffer['square'] = [
-            64 => $this->makeImageUrl($this->id, ImageSize::SQUARE_64, $this->extension),
-            128 => $this->makeImageUrl($this->id, ImageSize::SQUARE_128, $this->extension),
-        ];
-
-        $buffer['origin'] = $this->makeImageUrl($this->id, ImageSize::ORIGIN, $this->extension);
-
-        return $buffer;
+        return route('image.get', [
+            'id' => $this->id,
+            'size' => $size,
+        ]);
     }
 }

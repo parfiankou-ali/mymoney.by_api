@@ -15,7 +15,7 @@ class Image extends Model
      * @var array
      */
     protected $fillable = [
-        'origin_width', 'origin_height', 'extension',
+        'original_width', 'original_height', 'extension',
     ];
 
     public static function make(UploadedFile $file): Image
@@ -23,13 +23,18 @@ class Image extends Model
         $image = \Intervention\Image\Facades\Image::make($file);
 
         $model = new Image();
-        $model->origin_width = $image->width();
-        $model->origin_height = $image->height();
+        $model->original_width = $image->width();
+        $model->original_height = $image->height();
         $model->extension = $file->getClientOriginalExtension();
         $model->save();
 
         File::storeImage($file, $model->id);
 
         return $model;
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
     }
 }
