@@ -31,6 +31,19 @@ class User extends Model implements JWTSubject, AuthenticatableContract
         'password',
     ];
 
+    public static function makeEmployeeCode($length = 8): string
+    {
+        do {
+            $code = '';
+
+            for ($i = 0; $i < $length; $i++) {
+                $code .= mt_rand(0, 9);
+            }
+        } while (User::where('employee_code', '=', $code)->count());
+
+        return $code;
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

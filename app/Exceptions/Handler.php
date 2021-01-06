@@ -4,10 +4,11 @@ namespace App\Exceptions;
 
 use Anik\Form\ValidationException;
 use App\Exceptions\Http\HttpException;
-use App\Http\Enums\HttpExceptionCode;
+use App\Http\Resources\HttpExceptionResource;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Response;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -46,24 +47,24 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, \Exception $exception)
+    public function render($request, Exception $exception)
     {
         $response = new \stdClass();
-        $statusCode = HttpExceptionCode::INTERNAL_SERVER_ERROR;
+        $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
 
         switch (true) {
             case($exception instanceof MethodNotAllowedHttpException):
-                $statusCode = HttpExceptionCode::ROUTE_METHOD_NOT_ALLOWED;
+                $statusCode = Response::HTTP_METHOD_NOT_ALLOWED;
                 break;
             case($exception instanceof NotFoundHttpException):
-                $statusCode = HttpExceptionCode::ROUTE_NOT_FOUND;
+                $statusCode = Response::HTTP_NOT_FOUND;
                 break;
             case($exception instanceof ValidationException):
-                $statusCode = HttpExceptionCode::VALIDATION_ERROR;
+                $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
                 $response = $exception->getResponse();
                 break;
             case($exception instanceof HttpException):
-                $statusCode = $exception->getStatusCode();
+                $statusCode = $exception::getStatusCode();
                 $response = $exception->getResponse();
                 break;
             default:
@@ -79,7 +80,7 @@ class Handler extends ExceptionHandler
         $exception->response = $response;
         $exception->status_code = $statusCode;
 
-        return response()->json(new \App\Http\Resources\HttpExceptionResource($exception), 400)
+        return response()->json(new HttpExceptionResource($exception), Response::HTTP_BAD_REQUEST)
             ->withHeaders([
                 'Access-Control-Allow-Origin'      => '*',
                 'Access-Control-Allow-Methods'     => 'POST, GET, OPTIONS, PUT, DELETE',

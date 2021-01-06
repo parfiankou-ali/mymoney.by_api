@@ -26,6 +26,7 @@ $app = new Laravel\Lumen\Application(
 $app->withFacades();
 $app->withEloquent();
 
+$app->configure('view');
 $app->configure('jwt');
 
 /*
@@ -100,7 +101,6 @@ $app->register(Intervention\Image\ImageServiceProviderLumen::class);
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-    require __DIR__.'/../routes/web.php';
     App\Routes\RoutesCollector::Collect(
         __DIR__.'/../routes',
         $router

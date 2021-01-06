@@ -2,10 +2,12 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Enums\HttpExceptionCode;
 use App\Http\Resources\HttpExceptionResource;
+
 use Closure;
+
 use Illuminate\Contracts\Auth\Factory as Auth;
+use Illuminate\Http\Response;
 
 class Authenticate
 {
@@ -39,9 +41,9 @@ class Authenticate
     {
         if ($this->auth->guard($guard)->guest()) {
             $exception = new \App\Http\Models\HttpException();
-            $exception->status_code = HttpExceptionCode::UNAUTHORIZED;
+            $exception->status_code = Response::HTTP_UNAUTHORIZED;
 
-            return response()->json(new HttpExceptionResource($exception), 400);
+            return response()->json(new HttpExceptionResource($exception), Response::HTTP_BAD_REQUEST);
         }
 
         return $next($request);

@@ -13,18 +13,20 @@ class Route
         $this->router = $router;
     }
 
-    public function get(string $url): void
+    public function get(string $url): Router
     {
-        $controllerMethod = $this->computeControllerMethod($url);
-
-        $this->router->get($url, $controllerMethod);
+        return $this->router->get($url, [
+            'as' => $url,
+            'uses' => $this->computeControllerMethod($url),
+        ]);
     }
 
-    public function post(string $url): void
+    public function post(string $url): Router
     {
-        $controllerMethod = $this->computeControllerMethod($url);;
-
-        $this->router->post($url, $controllerMethod);
+        return $this->router->post($url, [
+            'as' => $url,
+            'uses' => $this->computeControllerMethod($url),
+        ]);
     }
 
     /**
