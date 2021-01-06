@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\v1_0;
 
-use App\Exceptions\Http\InvalidCredentialsHttpException;
-use App\Exceptions\Http\UserNotFoundHttpException;
+use App\Exceptions\Http\User\InvalidCredentialsHttpException;
+use App\Exceptions\Http\User\UserNotFoundHttpException;
 
 use App\Http\Controllers\Controller;
 

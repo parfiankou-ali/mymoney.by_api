@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\v1_0;
 
-use App\Exceptions\Http\ImageFileNotFoundHttpException;
-use App\Exceptions\Http\ImageNotFoundHttpException;
-use App\Exceptions\Http\UserHasNoPermissionsHttpException;
+use App\Exceptions\Http\Image\ImageFileNotFoundHttpException;
+use App\Exceptions\Http\Image\ImageNotFoundHttpException;
+use App\Exceptions\Http\User\UserHasNoPermissionsHttpException;
 
 use App\Http\Controllers\Controller;
 use App\Http\Models\Image;

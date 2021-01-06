@@ -1,6 +1,6 @@
 <?php
 
-class v1_0TestCase extends TestCase
+class TestCase_v1_0 extends TestCase
 {
     protected function versionPrefix(): string
     {

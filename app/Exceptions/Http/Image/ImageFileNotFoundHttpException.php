@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Exceptions\Http;
+namespace App\Exceptions\Http\Image;
+
+use App\Exceptions\Http\HttpException;
 
 class ImageFileNotFoundHttpException extends HttpException
 {

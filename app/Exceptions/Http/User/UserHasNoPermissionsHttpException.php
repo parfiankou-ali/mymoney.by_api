@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Exceptions\Http;
+namespace App\Exceptions\Http\User;
+
+use App\Exceptions\Http\HttpException;
 
 class UserHasNoPermissionsHttpException extends HttpException
 {
