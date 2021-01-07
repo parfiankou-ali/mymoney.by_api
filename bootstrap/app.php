@@ -89,6 +89,20 @@ $app->register(Intervention\Image\ImageServiceProviderLumen::class);
 
 /*
 |--------------------------------------------------------------------------
+| Localization
+|--------------------------------------------------------------------------
+|
+| Here we will setup all of the application's localization settings.
+| Locales are totally optional, so you are not required to uncomment
+| this lines.
+|
+*/
+
+app('translator')->setLocale(env('APP_LOCALE', 'en'));
+\Carbon\Carbon::setLocale(env('APP_LOCALE', 'en'));
+
+/*
+|--------------------------------------------------------------------------
 | Load The Application Routes
 |--------------------------------------------------------------------------
 |
